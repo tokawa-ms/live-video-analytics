@@ -34,7 +34,7 @@ Test the container using the following commands
 
 ### /score
 
-To get a list of detected objected using the following command
+To get a list of detected objects using the following command
 
 ```bash
    curl -X POST http://127.0.0.1/score -H "Content-Type: image/jpeg" --data-binary @<image_file_in_jpeg>
@@ -79,12 +79,21 @@ If successful, you will see JSON printed on your screen that looks something lik
 }
 ```
 
-Terminate the container using the following docker commands
+To filter the list of detected objects use the following command
 
 ```bash
-docker stop my_yolo_container
-docker rm my_yolo_container
+   curl -X POST "http://127.0.0.1/score?object=<objectType>" -H "Content-Type: image/jpeg" --data-binary @<image_file_in_jpeg>
 ```
+
+The above command will only return objects of objectType
+
+To filter the list of detected objects above a certain confidence threshold use the following command
+
+```bash
+   curl -X POST "http://127.0.0.1/score?object=<objectType>&confidence=<confidenceThreshold>" -H "Content-Type: image/jpeg" --data-binary @<image_file_in_jpeg>
+```
+
+In the above command, confidenceThreshold should be specified as a float value.
 
 ### /annotate
 
@@ -111,6 +120,15 @@ If successful, you will see a list of detected objected in JSON. The annotated i
 ```
 
 The entire /images folder will be copied to ./images on your host machine. Image files have the following format dd_mm_yyyy_HH_MM_SS.jpeg
+
+## Terminating
+
+Terminate the container using the following docker commands
+
+```bash
+docker stop my_yolo_container
+docker rm my_yolo_container
+```
 
 ## Upload docker image to Azure container registry
 
