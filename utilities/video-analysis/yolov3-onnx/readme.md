@@ -79,22 +79,6 @@ If successful, you will see JSON printed on your screen that looks something lik
 }
 ```
 
-To filter the list of detected objects use the following command
-
-```bash
-   curl -X POST "http://127.0.0.1/score?object=<objectType>" -H "Content-Type: image/jpeg" --data-binary @<image_file_in_jpeg>
-```
-
-The above command will only return objects of objectType
-
-To filter the list of detected objects above a certain confidence threshold use the following command
-
-```bash
-   curl -X POST "http://127.0.0.1/score?object=<objectType>&confidence=<confidenceThreshold>" -H "Content-Type: image/jpeg" --data-binary @<image_file_in_jpeg>
-```
-
-In the above command, confidenceThreshold should be specified as a float value.
-
 ### /annotate
 
 To see the bounding boxes overlaid on the image run the following command
