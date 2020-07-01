@@ -81,6 +81,30 @@ If successful, you will see JSON printed on your screen that looks something lik
 }
 ```
 
+#### Filter objects of interest
+
+To filter the list of detected objects use the following command
+
+```bash
+   curl -X POST "http://127.0.0.1:8080/score?object=<objectType>" -H "Content-Type: image/jpeg" --data-binary @<image_file_in_jpeg>
+```
+
+The above command will only return objects of objectType
+
+#### Filter objects of interest above a confidence threshold
+
+To filter the list of detected objects above a certain confidence threshold use the following command
+
+```bash
+   curl -X POST "http://127.0.0.1:8080/score?object=<objectType>&confidence=<confidenceThreshold>" -H "Content-Type: image/jpeg" --data-binary @<image_file_in_jpeg>
+```
+
+In the above command, confidenceThreshold should be specified as a float value.
+
+#### View video stream with inferencing overlays
+
+You can use the container to process video and view the output video with inferencing overlays in a browser. To do so, you can post video frames to the container with stream=<stream-id> as a query parameter (i.e. you will need to post video frames to [http://127.0.0.1:8080/score?stream=test-stream](http://127.0.0.1/score?stream=test-stream)]. The output video can then be viewed by going to [http://127.0.0.1:8080/stream/test-stream](http://127.0.0.1:8080/stream/test-stream).
+
 ### /annotate
 
 To see the bounding boxes overlaid on the image run the following command
