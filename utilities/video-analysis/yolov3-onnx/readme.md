@@ -36,7 +36,7 @@ Test the container using the following commands
 
 ### /score
 
-To get a list of detected objected using the following command
+To get a list of detected objects using the following command
 
 ```bash
    curl -X POST http://127.0.0.1:8080/score -H "Content-Type: image/jpeg" --data-binary @<image_file_in_jpeg>
@@ -131,14 +131,16 @@ If successful, you will see a list of detected objected in JSON. The annotated i
 
 The entire /images folder will be copied to ./images on your host machine. Image files have the following format dd_mm_yyyy_HH_MM_SS.jpeg
 
-## Terminating the container
+## Terminating
+
+Terminate the container using the following docker commands
 
 ```bash
 docker stop my_yolo_container
 docker rm my_yolo_container
 ```
 
-## Upload Docker image to Azure container registry
+## Upload docker image to Azure container registry
 
 Follow instruction in [Push and Pull Docker images  - Azure Container Registry](http://docs.microsoft.com/en-us/azure/container-registry/container-registry-get-started-docker-cli) to save your image for later use on another machine.
 
