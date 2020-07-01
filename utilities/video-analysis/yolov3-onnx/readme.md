@@ -27,8 +27,10 @@ Build the container image (should take some minutes) by running the following Do
 Run the container using the following Docker command
 
 ```bash
-    docker run  --name my_yolo_container -p 80:80 -d  -i yolov3-onnx:latest
+    docker run  --name my_yolo_container -p 8080:80 -d  -i yolov3-onnx:latest
 ```
+
+Note that you can use any host port that is available instead of 8080.
 
 Test the container using the following commands
 
@@ -37,7 +39,7 @@ Test the container using the following commands
 To get a list of detected objected using the following command
 
 ```bash
-   curl -X POST http://127.0.0.1/score -H "Content-Type: image/jpeg" --data-binary @<image_file_in_jpeg>
+   curl -X POST http://127.0.0.1:8080/score -H "Content-Type: image/jpeg" --data-binary @<image_file_in_jpeg>
 ```
 
 If successful, you will see JSON printed on your screen that looks something like this
@@ -84,7 +86,7 @@ If successful, you will see JSON printed on your screen that looks something lik
 To see the bounding boxes overlaid on the image run the following command
 
 ```bash
-   curl -X POST http://127.0.0.1/annotate -H "Content-Type: image/jpeg" --data-binary @<image_file_in_jpeg> --output out.jpeg
+   curl -X POST http://127.0.0.1:8080/annotate -H "Content-Type: image/jpeg" --data-binary @<image_file_in_jpeg> --output out.jpeg
 ```
 
 If successful, you will see a file out.jpeg with bounding boxes overlaid on the input image.
@@ -94,10 +96,10 @@ If successful, you will see a file out.jpeg with bounding boxes overlaid on the 
 To get the list of detected objects and also generate an annotated image run the following command
 
 ```bash
-   curl -X POST http://127.0.0.1/score-debug -H "Content-Type: image/jpeg" --data-binary @<image_file_in_jpeg>
+   curl -X POST http://127.0.0.1:8080/score-debug -H "Content-Type: image/jpeg" --data-binary @<image_file_in_jpeg>
 ```
 
-If successful, you will see a list of detected objected in JSON. The annotated image will be genereated in the /app/images directory inside the container. You can copy the images out to your host machine by using the following command
+If successful, you will see a list of detected objected in JSON. The annotated image will be generated in the /app/images directory inside the container. You can copy the images out to your host machine by using the following command
 
 ```bash
    docker cp my_yolo_container:/app/images ./
