@@ -141,13 +141,19 @@ To test the docker container you will need to create a graph topology with gRPC 
 }
 ```
 
+### Monitoring
+
 Run the following command to monitor the logs from the docker container
 
 ```powershell
 docker logs lva-grpc -f
 ```
 
+### Visualizing output
+
 You can view the video passing through the GStreamer pipeline by opening a browser on your host machine with URL as [http://127.0.0.1:8080/stream/SampleGraph1](http://127.0.0.1:8080/stream/SampleGraph1).
+
+### Terminating
 
 When done you can stop and remove the docker container using the following command
 
@@ -155,3 +161,52 @@ When done you can stop and remove the docker container using the following comma
 docker stop lva-grpc
 docker rm lva-grpc
 ```
+
+## Deploy as an Azure IoT Edge module
+
+Follow instruction in [Push and Pull Docker images - Azure Container Registry](http://docs.microsoft.com/en-us/azure/container-registry/container-registry-get-started-docker-cli) to save the docker image in Azure Container Registry. You can now deploy the container as an Azure IoT Edge module by following instructions in [Deploy module from Azure portal](https://docs.microsoft.com/en-us/azure/iot-edge/how-to-deploy-modules-portal) article (use the IoT Edge module option and remember to set the create options and environment variables).
+
+## Using video analytics plugins
+
+Read the [documentation](https://github.com/opencv/gst-video-analytics/wiki/Elements) for DLStreamer GStreamer plugins to understand what plugins are available and how they work.
+
+### Object detection
+
+To perform object detection we can use [gvadetect](https://github.com/opencv/gst-video-analytics/wiki/gvadetect) plugin. For that, run the docker container with the following command
+
+```powershell
+docker run -it --name lva-grpc -p 8080:80 -p 5001:5001 --ipc="container:lvaEdge" -e MJPEG_OUTPUT=1 -e GST_LVA_PIPELINE="appsrc name=lvasource ! videoconvert ! gvadetect model=/data/models/intel/person-vehicle-bike-detection-crossroad-0078/FP32/person-vehicle-bike-detection-crossroad-0078.xml model_proc=/data/model_procs/person-vehicle-bike-detection-crossroad-0078.json device=CPU ! video/x-raw,format=RGB ! videoconvert ! appsink name=lvasink" -d -i lva-gst-ovdl:latest
+```
+
+Note that the main change is the value of environment variable GST_LVA_PIPELINE (which defines the GStreamer pipeline). In the above command we are using a model that performs person, vehicle, and bike detection. This model was specified in models.lst file (found in models directory) and was downloaded when you ran the docker build command.
+
+To view the results of the above command, follow the steps outlined in the previous section of "Testing the docker container". With the above command you can view the MJPEG stream with bounding boxes of detected objects. If you use the LVA on IoT Edge sample code, you can also view the [inference events using Visual Studio Code](https://docs.microsoft.com/en-us/azure/media-services/live-video-analytics-edge/use-your-model-quickstart#interpret-results).
+
+### Object detection and classification
+
+To perform object detection and classification we can use use [gvadetect](https://github.com/opencv/gst-video-analytics/wiki/gvadetect) and [gvaclassify](https://github.com/opencv/gst-video-analytics/wiki/gvaclassify) together by using the following command
+
+```powershell
+docker run -it --name lva-grpc -p 8080:80 -p 5001:5001 --ipc="container:lvaEdge" -e MJPEG_OUTPUT=1 -e GST_LVA_PIPELINE="appsrc name=lvasource ! videoconvert ! gvadetect model=/data/models/intel/person-vehicle-bike-detection-crossroad-0078/FP32/person-vehicle-bike-detection-crossroad-0078.xml model_proc=/data/model_procs/person-vehicle-bike-detection-crossroad-0078.json device=CPU ! gvaclassify model=/data/models/intel/vehicle-attributes-recognition-barrier-0039/FP32/vehicle-attributes-recognition-barrier-0039.xml model-proc=/data/model_procs/vehicle-attributes-recognition-barrier-0039.json device=CPU object-class=vehicle ! video/x-raw,format=RGB ! videoconvert ! appsink name=lvasink" -d -i lva-gst-ovdl:latest
+```
+
+The above command detects person, vehicles, and bikes, and performs classification on detected vehicles.
+
+### Object detection, tracking and classification
+
+To perform object detection and tracking we can use use [gvadetect](https://github.com/opencv/gst-video-analytics/wiki/gvadetect), [gvatrack](https://github.com/opencv/gst-video-analytics/wiki/gvatrack), and [gvaclassify](https://github.com/opencv/gst-video-analytics/wiki/gvaclassify) together by using the following command
+
+```powershell
+docker run -it --name lva-grpc -p 8080:80 -p 5001:5001 --ipc="container:lvaEdge" -e MJPEG_OUTPUT=1 -e GST_LVA_PIPELINE="appsrc name=lvasource ! videoconvert ! gvadetect model=/data/models/intel/person-vehicle-bike-detection-crossroad-0078/FP32/person-vehicle-bike-detection-crossroad-0078.xml model_proc=/data/model_procs/person-vehicle-bike-detection-crossroad-0078.json device=CPU inference-interval=3 ! queue ! gvatrack tracking-type=short-term ! queue ! gvaclassify model=/data/models/intel/vehicle-attributes-recognition-barrier-0039/FP32/vehicle-attributes-recognition-barrier-0039.xml model-proc=/data/model_procs/vehicle-attributes-recognition-barrier-0039.json device=CPU object-class=vehicle ! video/x-raw,format=RGB ! videoconvert ! appsink name=lvasink" -d -i lva-gst-ovdl:latest
+```
+
+You can learn more about the options for object tracking on its [wiki page](https://github.com/opencv/gst-video-analytics/wiki/Object-tracking).
+
+## Next steps
+
+As next steps, you can try the following
+
+* Replace the models in the command lines above with other models specified in models.lst.
+* Update models.lst with other models from OpenVINO model zoo and rebuild the docker container and experiment with those models.
+* Read the [GStreamer video analytics tutorial](https://github.com/opencv/gst-video-analytics/wiki/GStreamer%20Video%20Analytics%20Tutorial) and experiment with different pipelines.
+* Read about [OpenVINO toolkit supported devices](https://docs.openvinotoolkit.org/latest/openvino_docs_IE_DG_supported_plugins_Supported_Devices.html) and experiment with using GPU/VPU/FPGA (instead of CPU. You will need to run the docker container in privileged mode in some cases).
