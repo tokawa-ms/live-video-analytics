@@ -20,7 +20,7 @@ Note that the links above assume that you are using a Windows machine with [WSL2
 
 ## Deploy LVA on IoT Edge
 
-[Deploy LVA on IoT Edge module using the Azure portal](https://docs.microsoft.com/en-us/azure/media-services/live-video-analytics-edge/deploy-iot-edge-device#deploy-live-video-analytics-edge-module) with the following JSON for "Container Create Options". Notice the "IpcMode" value (this specifies the docker [IPC](https://docs.docker.com/engine/reference/run/#ipc-settings---ipc) settings for this container).
+[Deploy LVA on IoT Edge module using the Azure portal](https://docs.microsoft.com/en-us/azure/media-services/live-video-analytics-edge/deploy-iot-edge-device#deploy-live-video-analytics-edge-module) with the following JSON for "Container Create Options". Notice the "IpcMode" value (this specifies the docker [IPC](https://docs.docker.com/engine/reference/run/#ipc-settings---ipc) settings for this container). Also, please set the name of the module as lvaEdge (for the next set of instructions to work properly).
 
 ```JSON
 {
@@ -46,7 +46,7 @@ Note that the links above assume that you are using a Windows machine with [WSL2
 Build the container image (should take some minutes) by running the following Docker command
 
 ```powershell
-docker build . -f .\docker\Dockerfile -t lva-gst-ovdl:latest .
+docker build -f .\docker\Dockerfile -t lva-gst-ovdl:latest .
 ```
 
 ## Running the docker container

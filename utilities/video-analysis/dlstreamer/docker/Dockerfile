@@ -76,5 +76,6 @@ EXPOSE 80
 # Run startup script that initialized OpenVINO environment variables and starts the LVA gRPC extension server
 WORKDIR /app
 COPY ./app/start.sh /app
+RUN chmod +x /app/start.sh
 CMD exec /app/start.sh
 
