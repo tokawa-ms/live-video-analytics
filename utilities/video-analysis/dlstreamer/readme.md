@@ -14,29 +14,6 @@ Additional open source technologies included are [Yolov3](http://pjreddie.com/da
 2. [Visual Studio Code](https://code.visualstudio.com/) with [Azure IoT Tools extension](https://marketplace.visualstudio.com/items?itemName=vsciot-vscode.azure-iot-tools).
 3. A device with [IoT Edge runtime](https://docs.microsoft.com/en-us/azure/iot-edge/how-to-install-iot-edge-windows) installed and [registered as an IoT Edge device](https://docs.microsoft.com/en-us/azure/iot-edge/how-to-register-device). You can use a Linux machine or a Windows machine with [WSL2](https://docs.microsoft.com/en-us/windows/wsl/about#what-is-wsl-2) for this purpose.
 
-## Deploy LVA on IoT Edge
-
-[Deploy LVA on IoT Edge module using the Azure portal](https://docs.microsoft.com/en-us/azure/media-services/live-video-analytics-edge/deploy-iot-edge-device#deploy-live-video-analytics-edge-module) with the following JSON for "Container Create Options". Notice the "IpcMode" value (this specifies the docker [IPC](https://docs.docker.com/engine/reference/run/#ipc-settings---ipc) settings for this container). Also, please set the name of the module as lvaEdge (for the next set of instructions to work properly).
-
-```JSON
-{
-    "HostConfig": {
-        "LogConfig": {
-            "Type": "",
-            "Config": {
-                "max-size": "10m",
-                "max-file": "10"
-            }
-        },
-        "IpcMode": "shareable",
-        "Binds": [
-           "/var/lib/azuremediaservices:/var/lib/azuremediaservices",
-           "/var/media:/var/media"
-        ]
-    }
-}
-```
-
 ## Building the container image
 
 Build the container image (should take some minutes) by running the following Docker command from the same directory as this readme file.
