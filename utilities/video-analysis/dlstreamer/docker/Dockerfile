@@ -72,6 +72,7 @@ RUN mkdir /var/runit && \
     chmod +x /var/runit/gunicorn/run
 
 EXPOSE 80
+EXPOSE 5001
 
 # Run startup script that initialized OpenVINO environment variables and starts the LVA gRPC extension server
 WORKDIR /app
