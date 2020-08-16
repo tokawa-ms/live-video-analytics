@@ -11,9 +11,7 @@ import json
 import requests
 
 # Imports for the REST API
-from flask import Flask, request, jsonify, Response
-
-       
+from flask import Flask, request, jsonify, Response     
 
 app = Flask(__name__)
 
@@ -25,7 +23,7 @@ def defaultPage():
 @app.route('/stream/<id>')
 def stream(id):
     respBody = ("<html>"
-                "<h1>Stream with inferencing overlays</h1>"
+                "<h1>MJPEG stream</h1>"
                 "<img src=\"/mjpeg/" + id + "\"/>"
                 "</html>")
 
