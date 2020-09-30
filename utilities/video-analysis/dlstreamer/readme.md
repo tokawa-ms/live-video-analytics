@@ -43,7 +43,7 @@ To test the docker container you will need to create a graph topology with gRPC 
         {
             "opName": "GraphTopologySet",
             "opParams": {
-                "topologyUrl": "https://raw.githubusercontent.com/Azure/live-video-analytics/master/MediaGraph/topologies/grpc-extension/topology.json"
+                "topologyUrl": "https://raw.githubusercontent.com/Azure/live-video-analytics/master/MediaGraph/topologies/grpcExtension/topology.json"
             }
         },
         {
@@ -51,7 +51,7 @@ To test the docker container you will need to create a graph topology with gRPC 
             "opParams": {
                 "name": "SampleGraph1",
                 "properties": {
-                    "topologyName": "InferencingWithgRPCExtension",
+                    "topologyName": "InferencingWithGrpcExtension",
                     "description": "Sample graph description",
                     "parameters": [
                         {
@@ -67,11 +67,7 @@ To test the docker container you will need to create a graph topology with gRPC 
                             "value": "testpassword"
                         },
                         {
-                            "name" : "fps",
-                            "value": 10
-                        },
-                        {
-                            "name" : "grpcUrl",
+                            "name" : "grpcExtensionAddress",
                             "value" : "tcp://lvaExtension:5001"
                         }
                     ]
@@ -105,7 +101,7 @@ To test the docker container you will need to create a graph topology with gRPC 
         {
             "opName": "GraphTopologyDelete",
             "opParams": {
-                "name": "InferencingWithgRPCExtension"
+                "name": "InferencingWithGrpcExtension"
             }
         }
     ]
