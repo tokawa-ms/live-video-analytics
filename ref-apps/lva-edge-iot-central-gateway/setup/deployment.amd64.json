@@ -40,7 +40,7 @@
                                 "value": "lvaEdge"
                             },
                             "amsAccountName": {
-                                "value": "<YOUR_AZURE_MEDIA_ACCOUNT_NAME>"
+                                "value": "<YOUR_AZURE_MEDIA_SERVICES_ACCOUNT_NAME>"
                             },
                             "sampleImage_analyze": {
                                 "value": "https://raw.githubusercontent.com/Azure/live-video-analytics/master/ref-apps/lva-edge-iot-central-gateway/setup/class_images/analyze_icon.jpg"
