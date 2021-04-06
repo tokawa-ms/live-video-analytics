@@ -10,7 +10,11 @@
             "minDockerVersion": "v1.25",
             "loggingOptions": "",
             "registryCredentials": {
-
+              "$CONTAINER_REGISTRY_USERNAME_myacr": {
+                "username": "$CONTAINER_REGISTRY_USERNAME_myacr",
+                "password": "$CONTAINER_REGISTRY_PASSWORD_myacr",
+                "address": "$CONTAINER_REGISTRY_USERNAME_myacr.azurecr.io"
+              }
             }
           }
         },
@@ -69,7 +73,7 @@
                       "max-file": "10"
                     }
                   },
-                  "IpcMode" : "host"
+                  "IpcMode": "host"
                 }
               }
             }
@@ -84,52 +88,52 @@
               "createOptions": {
                 "HostConfig": {
                   "Binds": [
-                      "$INPUT_VIDEO_FOLDER_ON_DEVICE:/live/mediaServer/media"
-                    ]
-                  }
+                    "$INPUT_VIDEO_FOLDER_ON_DEVICE:/live/mediaServer/media"
+                  ]
+                }
               }
             }
           },
-          "lvaExtension" : {
+          "lvaExtension": {
             "version": "1.0",
             "type": "docker",
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "<IMAGE_URI>",
+              "image": "$CONTAINER_REGISTRY_USERNAME_myacr.azurecr.io/<IMAGE_URI>",
               "createOptions": {
-                  "ExposedPorts": {
-                    "80/tcp": {},
-                    "5001/tcp" : {}
+                "ExposedPorts": {
+                  "80/tcp": {},
+                  "5001/tcp": {}
                 },
-                "Env":[
+                "Env": [
                   "MJPEG_OUTPUT=1",
                   "GST_CONFIG_FILE=inference.txt",
                   "GST_CLASSIFICATION_FILES=car_color.txt,car_type.txt",
                   "GST_TRACKER_FILE=tracker.txt"
-                ],                
+                ],
                 "HostConfig": {
-                    "PortBindings": {
-                        "80/tcp": [
-                            {
-                                "HostPort": "8080"
-                            }
-                        ],
-                        "5001/tcp" : [
-                            {
-                                "HostPort" : "5001"
-                            }
-                        ]
-                    },
-                    "LogConfig": {
-                        "Type": "",
-                        "Config": {
-                          "max-size": "10m",
-                          "max-file": "10"
-                        }
-                    },        
-                    "IpcMode": "host",
-                    "Runtime": "nvidia"
+                  "PortBindings": {
+                    "80/tcp": [
+                      {
+                        "HostPort": "8080"
+                      }
+                    ],
+                    "5001/tcp": [
+                      {
+                        "HostPort": "5001"
+                      }
+                    ]
+                  },
+                  "LogConfig": {
+                    "Type": "",
+                    "Config": {
+                      "max-size": "10m",
+                      "max-file": "10"
+                    }
+                  },
+                  "IpcMode": "host",
+                  "Runtime": "nvidia"
                 }
               }
             }
@@ -159,7 +163,7 @@
         "aadResourceId": "https://management.core.windows.net/",
         "armEndpoint": "https://management.azure.com/",
         "diagnosticsEventsOutputName": "AmsDiagnostics",
-        "operationalEventsOutputName": "AmsOperational",        
+        "operationalEventsOutputName": "AmsOperational",
         "logLevel": "Information",
         "logCategories": "Application,Events",
         "allowUnsecuredEndpoints": true,
